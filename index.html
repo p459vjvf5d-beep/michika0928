@@ -1,1 +1,96 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <title>高知市 観光スポットマップ</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
+  <!-- Leaflet CSS -->
+  <link
+    rel="stylesheet"
+    href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+  />
+
+  <style>
+    body {
+      margin: 0;
+      font-family: sans-serif;
+    }
+
+    h2 {
+      text-align: center;
+      background: #2c7be5;
+      color: white;
+      padding: 10px;
+      margin: 0;
+    }
+
+    #map {
+      height: 90vh;
+      width: 100%;
+    }
+  </style>
+</head>
+
+<body>
+
+<h2>📍 高知市 観光スポットマップ</h2>
+
+<div id="map"></div>
+
+<!-- Leaflet JS -->
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+<script>
+  // 地図の中心（高知市）
+  const map = L.map('map').setView([33.5597, 133.5311], 14);
+
+  // 地図表示
+  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    attribution: '© OpenStreetMap'
+  }).addTo(map);
+
+  // 観光スポットデータ
+  const spots = [
+    {
+      name: "高知城",
+      lat: 33.5593,
+      lng: 133.5311,
+      info: "高知のシンボル"
+    },
+    {
+      name: "ひろめ市場",
+      lat: 33.5598,
+      lng: 133.5315,
+      info: "かつおのたたきが有名"
+    },
+    {
+      name: "高知城歴史博物館",
+      lat: 33.5589,
+      lng: 133.5304,
+      info: "土佐の歴史を学べる"
+    },
+    {
+      name: "桂浜",
+      lat: 33.5036,
+      lng: 133.5717,
+      info: "坂本龍馬像と海"
+    },
+    {
+      name: "牧野植物園",
+      lat: 33.5715,
+      lng: 133.5527,
+      info: "植物好きにおすすめ"
+    }
+  ];
+
+  // マーカー追加
+  spots.forEach(spot => {
+    L.marker([spot.lat, spot.lng])
+      .addTo(map)
+      .bindPopup(`<b>${spot.name}</b><br>${spot.info}`);
+  });
+</script>
+
+</body>
+</html>
