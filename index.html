@@ -2,10 +2,10 @@
 <html lang="ja">
 <head>
   <meta charset="UTF-8">
-  <title>高知市 観光スポットマップ</title>
+  <title>高知市 観光スポットランキングマップ</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <!-- Leaflet CSS -->
+  <!-- Leaflet -->
   <link
     rel="stylesheet"
     href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
@@ -15,18 +15,31 @@
     body {
       margin: 0;
       font-family: sans-serif;
+      background: #f5f5f5;
     }
 
     h2 {
       text-align: center;
-      background: #2c7be5;
+      background: #ff9800;
       color: white;
       padding: 10px;
       margin: 0;
     }
 
+    #ranking {
+      background: white;
+      padding: 10px;
+      font-size: 14px;
+      border-bottom: 1px solid #ccc;
+    }
+
+    #ranking span {
+      display: block;
+      margin: 4px 0;
+    }
+
     #map {
-      height: 90vh;
+      height: 75vh;
       width: 100%;
     }
   </style>
@@ -34,62 +47,104 @@
 
 <body>
 
-<h2>📍 高知市 観光スポットマップ</h2>
+<h2>🏆 高知市 観光スポット人気ランキング</h2>
 
+<div id="ranking"></div>
 <div id="map"></div>
 
-<!-- Leaflet JS -->
+<!-- Leaflet -->
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 
 <script>
-  // 地図の中心（高知市）
-  const map = L.map('map').setView([33.5597, 133.5311], 14);
+  // 地図中心
+  const map = L.map('map').setView([33.5597, 133.5311], 13);
 
   // 地図表示
   L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
     attribution: '© OpenStreetMap'
   }).addTo(map);
 
-  // 観光スポットデータ
+  // 観光スポット（順位つき）
   const spots = [
     {
-      name: "高知城",
-      lat: 33.5593,
-      lng: 133.5311,
-      info: "高知のシンボル"
-    },
-    {
+      rank: 1,
       name: "ひろめ市場",
       lat: 33.5598,
       lng: 133.5315,
-      info: "かつおのたたきが有名"
+      info: "かつおのたたきで有名"
     },
     {
-      name: "高知城歴史博物館",
-      lat: 33.5589,
-      lng: 133.5304,
-      info: "土佐の歴史を学べる"
+      rank: 2,
+      name: "高知城",
+      lat: 33.5593,
+      lng: 133.5311,
+      info: "現存天守の名城"
     },
     {
+      rank: 3,
       name: "桂浜",
       lat: 33.5036,
       lng: 133.5717,
-      info: "坂本龍馬像と海"
+      info: "坂本龍馬像と太平洋"
     },
     {
+      rank: 4,
       name: "牧野植物園",
       lat: 33.5715,
       lng: 133.5527,
-      info: "植物好きにおすすめ"
+      info: "植物の宝庫"
+    },
+    {
+      rank: 5,
+      name: "日曜市",
+      lat: 33.5602,
+      lng: 133.5319,
+      info: "毎週日曜の朝市"
+    },
+    {
+      rank: 6,
+      name: "坂本龍馬記念館",
+      lat: 33.5067,
+      lng: 133.5664,
+      info: "龍馬ファン必見"
+    },
+    {
+      rank: 7,
+      name: "高知城歴史博物館",
+      lat: 33.5589,
+      lng: 133.5304,
+      info: "土佐の歴史"
+    },
+    {
+      rank: 8,
+      name: "はりまや橋",
+      lat: 33.5596,
+      lng: 133.5342,
+      info: "高知の有名スポット"
     }
   ];
 
-  // マーカー追加
+  // ランキング表示
+  const rankingDiv = document.getElementById("ranking");
+
+  spots
+    .sort((a, b) => a.rank - b.rank)
+    .forEach(spot => {
+      const span = document.createElement("span");
+      span.textContent = `🏅${spot.rank}位：${spot.name}`;
+      rankingDiv.appendChild(span);
+    });
+
+  // マーカー表示
   spots.forEach(spot => {
-    L.marker([spot.lat, spot.lng])
-      .addTo(map)
-      .bindPopup(`<b>${spot.name}</b><br>${spot.info}`);
+    const marker = L.marker([spot.lat, spot.lng]).addTo(map);
+
+    marker.bindPopup(`
+      <b>🏅${spot.rank}位：${spot.name}</b><br>
+      ${spot.info}
+    `);
   });
+
 </script>
 
 </body>
